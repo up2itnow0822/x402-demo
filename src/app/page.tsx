@@ -1,4 +1,4 @@
-const BASE_URL = "https://x402-demo.vercel.app";
+const BASE_URL = "https://x402-demo-pi.vercel.app";
 
 export default function Home() {
   return (
