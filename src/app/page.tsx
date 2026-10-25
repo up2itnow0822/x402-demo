@@ -129,7 +129,7 @@ Content-Type: application/json
               </div>
               <div className="badge-row">
                 <span className="badge badge-yellow">0.001 USDC</span>
-                <span className="badge badge-blue">Base</span>
+                <span className="badge badge-blue">Base Sepolia (testnet)</span>
               </div>
             </div>
             <p className="muted small mb-sm">
@@ -163,7 +163,7 @@ Content-Type: application/json
               </div>
               <div className="badge-row">
                 <span className="badge badge-yellow">0.005 USDC</span>
-                <span className="badge badge-blue">Base</span>
+                <span className="badge badge-blue">Base Sepolia (testnet)</span>
               </div>
             </div>
             <p className="muted small mb-sm">

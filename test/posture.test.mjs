@@ -10,6 +10,7 @@ const files = [
   "src/app/api/market-data/route.ts",
   "src/app/api/sentiment/route.ts",
   "src/app/page.tsx",
+  "README.md",
 ];
 const read = (f) => readFileSync(new URL(`../${f}`, import.meta.url), "utf8");
 
@@ -30,8 +31,9 @@ test("no network is ever 'base' (mainnet); API routes use base-sepolia", () => {
     assert.ok(!/network\s*:\s*["']base["']/.test(s), `${f} sets network 'base'`);
     assert.ok(!/"network"\s*:\s*"base"/.test(s), `${f} shows network "base"`);
     assert.ok(!/X-Payment-Network:\s*base\s*$/m.test(s), `${f} shows X-Payment-Network: base`);
+    assert.ok(!/badge[^>]*>\s*Base\s*</.test(s), `${f} shows a bare mainnet "Base" badge`);
   }
-  for (const f of files.slice(1, 3)) assert.match(read(f), /network:\s*"base-sepolia"/);
+  for (const f of ["src/app/api/market-data/route.ts", "src/app/api/sentiment/route.ts"]) assert.match(read(f), /network:\s*"base-sepolia"/);
 });
 
 test("402 response carries testnet/demo flags in body and headers", () => {
