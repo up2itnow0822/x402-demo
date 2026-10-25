@@ -109,3 +109,6 @@ jobs:
 
           echo "No standard toolchain detected; verifying repository contents"
           test -n "$(ls -A)"
+
+      - name: Test
+        run: npm test
