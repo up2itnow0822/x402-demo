@@ -74,18 +74,23 @@ export default function Home() {
                 network, and to which address.
               </p>
               <pre>{`HTTP/1.1 402 Payment Required
-X-Payment: {"amount":"0.001","currency":"USDC","network":"base","recipient":"0x833...","description":"Real-time BTC/ETH market data"}
+X-Payment: {"amount":"0.001","currency":"USDC","network":"base-sepolia","recipient":"0x...dEaD","description":"Real-time BTC/ETH market data"}
 X-Payment-Version: 1.0
-X-Payment-Network: base
-X-Payment-Recipient: 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913
+X-Payment-Network: base-sepolia
+X-Payment-Recipient: 0x000000000000000000000000000000000000dEaD  (testnet-only placeholder)
 X-Payment-Amount: 0.001
 X-Payment-Currency: USDC
+X-Payment-Testnet: true
+X-Payment-Demo: true
 Content-Type: application/json
 
 {
   "error": "payment_required",
   "amount": "0.001",
   "currency": "USDC",
+  "network": "base-sepolia",
+  "testnet": true,
+  "demo": true,
   "how_to_pay": {
     "demo": "Add header: X-Payment-Proof: <64-char hex>",
     "sdk": "npm install agentwallet-sdk"
@@ -124,7 +129,7 @@ Content-Type: application/json
               </div>
               <div className="badge-row">
                 <span className="badge badge-yellow">0.001 USDC</span>
-                <span className="badge badge-blue">Base</span>
+                <span className="badge badge-blue">Base Sepolia (testnet)</span>
               </div>
             </div>
             <p className="muted small mb-sm">
@@ -158,7 +163,7 @@ Content-Type: application/json
               </div>
               <div className="badge-row">
                 <span className="badge badge-yellow">0.005 USDC</span>
-                <span className="badge badge-blue">Base</span>
+                <span className="badge badge-blue">Base Sepolia (testnet)</span>
               </div>
             </div>
             <p className="muted small mb-sm">
@@ -209,7 +214,7 @@ Content-Type: application/json
 
 const wallet = new AgentWallet({
   privateKey: process.env.AGENT_PRIVATE_KEY,
-  network: 'base',
+  network: 'base-sepolia', // testnet only
 });
 
 // The SDK auto-detects 402, pays, and retries
@@ -217,8 +222,8 @@ const data = await wallet.fetch('${BASE_URL}/api/market-data');
 
 console.log(data.markets.BTC.price_usd); // e.g. 67420.15`}</pre>
           <p className="label-muted mt-sm">
-            The SDK handles: 402 detection → payment instruction parsing → USDC
-            transfer on Base → proof header injection → automatic retry.
+            The SDK handles: 402 detection → payment instruction parsing → testnet USDC
+            transfer on Base Sepolia → proof header injection → automatic retry.
           </p>
         </section>
 
@@ -240,8 +245,14 @@ console.log(data.markets.BTC.price_usd); // e.g. 67420.15`}</pre>
                 free API, updated every 60s
               </li>
               <li>
-                <strong>Production mode:</strong> In production,{" "}
-                <code>X-Payment-Proof</code> must be a real Base network
+                <strong>Testnet only:</strong> Endpoints advertise{" "}
+                <code>base-sepolia</code> and the recipient{" "}
+                <code>0x000000000000000000000000000000000000dEaD</code>, a
+                testnet-only burn placeholder. Do not send real or mainnet funds.
+              </li>
+              <li>
+                <strong>Future work (not available yet):</strong> a production
+                mode where <code>X-Payment-Proof</code> must be a real
                 transaction hash verified on-chain
               </li>
             </ul>

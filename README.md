@@ -33,7 +33,7 @@ curl https://x402-demo-pi.vercel.app/api/market-data \
 
 In demo mode, any 64-character hex string is accepted as payment proof. No real USDC is charged.
 
-In production, `X-Payment-Proof` must be a real Base network transaction hash verified on-chain.
+**Testnet only.** Endpoints advertise `base-sepolia` and the recipient `0x000000000000000000000000000000000000dEaD`, a testnet-only burn placeholder. Do not send real or mainnet funds. On-chain proof verification (a production mode) is future work and is not available yet.
 
 ## SDK Integration
 
@@ -46,7 +46,7 @@ import { AgentWallet } from 'agentwallet-sdk';
 
 const wallet = new AgentWallet({
   privateKey: process.env.AGENT_PRIVATE_KEY,
-  network: 'base',
+  network: 'base-sepolia', // testnet only
 });
 
 // Auto-handles 402: detects → pays → retries
