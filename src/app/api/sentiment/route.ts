@@ -8,7 +8,7 @@ import {
 const PAYMENT_REQUIREMENT = {
   amount: "0.005",
   currency: "USDC",
-  network: "base",
+  network: "base-sepolia", // testnet only
   recipient: DEMO_RECIPIENT,
   description: "AI crypto market sentiment analysis",
 };
@@ -152,7 +152,7 @@ export async function GET(req: NextRequest) {
       success: true,
       demo_mode: true,
       demo_note:
-        "Payment accepted in demo/testnet mode. No real USDC was charged. In production, X-Payment-Proof must be a verified on-chain transaction hash.",
+        "Payment accepted in demo/testnet mode. No real USDC was charged. On-chain verification is future work and is not available yet.",
       payment_proof_received: proof
         ? `${proof.slice(0, 10)}...${proof.slice(-6)}`
         : null,

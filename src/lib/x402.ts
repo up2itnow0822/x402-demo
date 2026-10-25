@@ -5,7 +5,11 @@
  * Patent Pending — AI Agent Economy
  */
 
-export const DEMO_RECIPIENT = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"; // USDC on Base (demo address)
+// TESTNET-ONLY PLACEHOLDER: the well-known 0x...dEaD burn address. This is NOT a
+// real wallet, NOT a token contract, and no funds should ever be sent to it.
+// This demo runs on Base Sepolia testnet only; it does not accept mainnet payments.
+export const DEMO_RECIPIENT = "0x000000000000000000000000000000000000dEaD";
+export const DEMO_NETWORK = "base-sepolia";
 
 export interface PaymentRequirement {
   amount: string;
@@ -23,6 +27,8 @@ export interface X402Headers {
   "X-Payment-Amount": string;
   "X-Payment-Currency": string;
   "X-Payment-Description": string;
+  "X-Payment-Testnet": string;
+  "X-Payment-Demo": string;
 }
 
 /**
@@ -37,13 +43,15 @@ export function buildPaymentHeaders(req: PaymentRequirement): X402Headers {
     "X-Payment-Amount": req.amount,
     "X-Payment-Currency": req.currency,
     "X-Payment-Description": req.description,
+    "X-Payment-Testnet": "true",
+    "X-Payment-Demo": "true",
   };
 }
 
 /**
  * Validate a payment proof header.
  * In demo mode: accept any 64-character hex string.
- * In production: verify on-chain transaction signature.
+ * Future work (not implemented): verify an on-chain transaction signature.
  */
 export function validatePaymentProof(proof: string | null): {
   valid: boolean;
@@ -81,12 +89,14 @@ export function buildPaymentRequiredResponse(req: PaymentRequirement): {
     },
     body: {
       error: "payment_required",
-      message: "This endpoint requires x402 payment. Include X-Payment-Proof header with a 64-character hex string (demo mode) or a valid on-chain transaction hash.",
+      message: "This endpoint requires x402 payment. Include X-Payment-Proof header with a 64-character hex string (testnet demo mode only; no on-chain verification).",
       amount: req.amount,
       currency: req.currency,
       network: req.network,
       recipient: req.recipient,
       description: req.description,
+      testnet: true,
+      demo: true,
       how_to_pay: {
         demo: "Add header: X-Payment-Proof: <any 64-char hex string>",
         sdk: "npm install agentwallet-sdk",
